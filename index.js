@@ -1,8 +1,9 @@
-module.exports = (app, threshold = 100, replenishTimeMs = 10000, backoffThreshold = 0.8 * threshold, waitTime = 5000) => {
+module.exports = (app, threshold = 100, replenishTimeMs = 10000, backoffThreshold = 0.8 * threshold, waitTime = 5000, debug = false) => {
   app.set('trust proxy', true)
   const ips = {}
   return (req, res, next) => {
     const requestCount = ips[req.ip]
+    if(debug) console.log(`Request count is ${requestCount} for ip ${req.ip}`)
 
     if(requestCount > threshold) {
       res.status(429).end()
